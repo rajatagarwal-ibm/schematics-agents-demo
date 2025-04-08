@@ -13,7 +13,7 @@ variable "region" {
 variable "prefix" {
   type        = string
   description = "Prefix to append to all resources created by this example"
-  default     = "agent-infra-sm"
+  default     = "ra-sm-infra"
 }
 
 variable "resource_group" {
@@ -31,4 +31,5 @@ variable "resource_tags" {
 variable "vpc_crn" {
   type = string
   description = "VPC CRN for binding the CBR Rule."
+#  default = "crn:v1:bluemix:public:is:us-south:a/abac0df06b644a9cabc6e44f55b3880e::vpc:r006-5d74f001-2ed4-49ec-9b52-bc4458a127bb"
 }

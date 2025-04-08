@@ -36,12 +36,21 @@ resource "ibm_is_vpc" "vpc" {
   tags           = var.resource_tags
 }
 
+resource "ibm_is_public_gateway" "pg" {
+  name           = "${var.prefix}-pg"
+  vpc            = ibm_is_vpc.vpc.id
+  zone           = "${var.region}-1"
+  resource_group = module.resource_group.resource_group_id
+  tags           = var.resource_tags
+}
+
 resource "ibm_is_subnet" "subnet" {
   name                     = "${var.prefix}-subnet"
   vpc                      = ibm_is_vpc.vpc.id
   zone                     = "${var.region}-1"
   total_ipv4_address_count = 256
   resource_group           = module.resource_group.resource_group_id
+  public_gateway = ibm_is_public_gateway.pg.id
 }
 
 ##############################################################################
@@ -65,7 +74,8 @@ resource "ibm_container_vpc_cluster" "cluster" {
 ##############################################################################
 
 module "schematics_agent" {
-  source                    = "../../"
+  source                    = "terraform-ibm-modules/schematics-agent/ibm"
+  version                   = "v1.0.2"
   infra_type                = "ibm_kubernetes"
   cluster_id                = ibm_container_vpc_cluster.cluster.id
   cluster_resource_group_id = module.resource_group.resource_group_name
