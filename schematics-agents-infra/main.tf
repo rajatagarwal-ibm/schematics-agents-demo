@@ -61,6 +61,7 @@ resource "ibm_container_vpc_cluster" "cluster" {
   name              = "${var.prefix}-cluster"
   vpc_id            = ibm_is_vpc.vpc.id
   flavor            = "bx2.4x16"
+  disable_outbound_traffic_protection = true # To provide internet access to pods, which allows them to download terraform provider
   resource_group_id = module.resource_group.resource_group_id
   worker_count      = 3
   zones {
